@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% for listing in listings %}
+    <div class="container mt-5 bg-primary-subtle w-80 text-left">
+        <h3>{{ listing.title }}</h3>
+        <div class="img-container bg-dark-subtle w-50 text-center">
+            {% if listing.image_url %}
+            <img src="{{ listing.image_url }}", width=240>
+            {% else %}
+            <p>No image</p>
+            {% endif %}
+        </div>
+
+        <p>- by {{ listing.user }}</p>
+        <p> Starting Price: ${{ listing.start_price }} </p>
+        <p>{{ listing.desc }}</p>
+    </div>
+    {% endfor %}
+{% endblock %}
