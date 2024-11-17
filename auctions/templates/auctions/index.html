@@ -1,22 +1,33 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-
-    {% for listing in listings %}
-    <div class="container mt-5 bg-primary-subtle w-80 text-left">
-        <h3>{{ listing.title }}</h3>
-        <div class="img-container bg-dark-subtle w-50 text-center">
-            {% if listing.image_url %}
-            <img src="{{ listing.image_url }}", width=240>
-            {% else %}
-            <p>No image</p>
-            {% endif %}
+    <h2 class="text-center py-5">Active Listings</h2>
+        {% for listing in listings %}
+        <div class="container-lg my-2 bd-blue-800">
+            <div class="row">
+                <div class="p-2 col-sm-4 col-lg-2">
+                    {% if listing.image_url %}
+                    <img class="d-block align-middle mx-auto" src="{{ listing.image_url }}", style="max-width:150px; max-height:150px; width: auto; height: auto;object-fit: contain;" alt="no image">
+                    {% else %}
+                    <img class="d-block align-middle mx-auto" src="{% static 'auctions/images/noimg.svg' %}" style="width:150px; height: 150px;">
+                    {% endif %}
+                </div>
+                <div class="p-2 col-sm-4 col-lg">
+                    <h5 class="card-title"><strong>{{ listing.title }}</strong></h5>
+                    <p><strong>Description: </strong>{{ listing.desc }}</p>
+                    <p>by {{ listing.user }}</p>
+                    <p>${{ listing.start_price }}</p>
+                    <p>Bids: {{ listing.bids }}</p>
+                    <a href="#" class="btn btn-primary">Click Me</a>
+                </div>
+            </div>
+            
+            
         </div>
-
-        <p>- by {{ listing.user }}</p>
-        <p> Starting Price: ${{ listing.start_price }} </p>
-        <p>{{ listing.desc }}</p>
-    </div>
     {% endfor %}
+    
+    </div>
+    
+
 {% endblock %}
