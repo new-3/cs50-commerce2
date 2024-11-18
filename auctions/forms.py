@@ -13,6 +13,16 @@ class ListingForm(ModelForm):
             }),
             'desc': forms.Textarea(attrs = {
                 'class': 'form-control'
-        })
+            }),
+            'start_price': forms.NumberInput(attrs = {
+                'class': 'form-control'
+            }),
+            'image_url': forms.URLInput(attrs = {
+                'class': 'form-control'
+            }),
+            'category': forms.Select(attrs = {
+                'class': 'form-control'
+            })
+        
         }
 

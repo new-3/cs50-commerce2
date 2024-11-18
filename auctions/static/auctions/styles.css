@@ -53,3 +53,8 @@
 .min-vh-50 {
   min-height: 50vh;
 }
+
+.helptext {
+  color: #678fb1 !important; /* This replicates the 'text-muted' class */
+  font-weight: lighter;
+}

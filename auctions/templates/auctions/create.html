@@ -1,12 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Create Listing</h2>
-    <p>Hello, {{ user.username }}</p>
-    <form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create">
-    </form>
+    <h2 class="text-center py-5">Create Listing</h2>
+    <div class="container-lg my-2 bd-blue-800 min-vh-50">
+        <div class="p-2 col-sm-6 col-lg-6 ">
+            <form action="{% url 'create' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Create">
+                </form>
+            </div>
+            </div>
+
+    
 
 {% endblock %}
