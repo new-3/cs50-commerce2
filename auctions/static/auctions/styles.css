@@ -49,3 +49,7 @@
   font-size: 2em;
   color: #333;
 }
+
+.min-vh-50 {
+  min-height: 50vh;
+}
