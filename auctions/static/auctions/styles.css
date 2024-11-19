@@ -58,3 +58,11 @@
   color: #678fb1 !important; /* This replicates the 'text-muted' class */
   font-weight: lighter;
 }
+
+div.listing_img_container {
+  max-height: 50vh;
+}
+
+img.listing_img {
+   max-height: 100%;
+}

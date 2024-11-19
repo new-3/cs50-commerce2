@@ -82,3 +82,15 @@ def create(request):
     return render(request, "auctions/create.html", {
         "form" : ListingForm()
     })
+
+
+def listing(request, listing_id):
+    """Render detailed page for listing."""
+
+    listing = Listing.objects.get(pk=listing_id)
+    print(listing)
+    stat = listing.get_status_display()
+    print(stat)
+    return render(request, "auctions/listing.html", {
+        "listing" : listing
+    })

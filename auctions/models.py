@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 class User(AbstractUser):
     pass
 
+
 class Category(models.Model):
     """Restricts length of code field to exactly 3. """
     def validate_code_len(value):
