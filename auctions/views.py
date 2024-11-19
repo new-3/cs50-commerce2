@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing
+from .models import User, Listing, Category
 from .forms import ListingForm
 
 def index(request):
@@ -84,13 +84,21 @@ def create(request):
     })
 
 
-def listing(request, listing_id):
+def listing(request):
     """Render detailed page for listing."""
-
+    listing_id = request.GET.get('id')
+    
     listing = Listing.objects.get(pk=listing_id)
     print(listing)
     stat = listing.get_status_display()
     print(stat)
     return render(request, "auctions/listing.html", {
         "listing" : listing
+    })
+
+def category(request):
+    categories = Category.objects.all()
+
+    return render(request, "auctions/category.html", {
+        "categories": categories
     })
