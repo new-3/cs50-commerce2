@@ -8,8 +8,15 @@ from .models import User, Listing, Category
 from .forms import ListingForm
 
 def index(request):
+    cat = request.GET.get('cat')
+    # when category is specified by GET Method
+    if cat:
+        listings = Listing.objects.filter(category=cat)
+    else:
+        listings = Listing.objects.all()
+
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.all()
+        "listings": listings
     })
 
 
@@ -87,7 +94,7 @@ def create(request):
 def listing(request):
     """Render detailed page for listing."""
     listing_id = request.GET.get('id')
-    
+
     listing = Listing.objects.get(pk=listing_id)
     print(listing)
     stat = listing.get_status_display()
