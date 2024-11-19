@@ -23,29 +23,22 @@
             <!-- bid btn area start -->
             <div class="border col-sm-6 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
                 <!-- d-flex class is needed to align elements (due to heights decided by size of img)-->
-                {% if user.is_authenticated %}
-                    {% if listing.user == request.user %}                        <form class="#" action="">
-                        <div class="align-items-center p-5">
-                        <div class="input-group flex-nowrap">
-                            <span class="input-group-text" id="addon-wrapping">$</span>
-                                <input type="number" class="form-control disabled" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="addon-wrapping">
-                                <button type="submit" class="btn btn-primary disabled" id="submit-addon">Bid!</button>
-                        </div>
-                    </form>
-                        <p>Sellers cannot bid on their own listings.</p>
-                    {% else %}
-                        <form class="#" action="POST">
-                            <div class="align-items-center p-5">
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text" id="addon-wrapping">$</span>
-                                    <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="addon-wrapping">
-                                    <button type="submit" class="btn btn-primary" id="submit-addon">Bid!</button>
-                            </div>
-                        </form>
-                    {% endif %}
-                {% else %}
+                <form class="#" action="POST">
+                    <div class="align-items-center p-5">
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">$</span>
+                        <input type="number" class="form-control" placeholder="현재 가격을 표시할 것." aria-label="Bid Price" aria-describedby="addon-wrapping"
+                        {% if listing.user == request.user or not user.is_authenticated %}disabled{% endif %}>
+                        <button type="submit" class="btn btn-primary {% if listing.user == request.user or not user.is_authenticate %}disabled{% endif %}" id="submit-addon">Bid!</button>
+                    </div>
+                </form>
+                    {% if not user.is_authenticated %}
                     <p>You must be <a href="{% url 'login' %}">logged in</a> to bid.</p>
-                {% endif %}
+                    {% endif %}
+                    {% if listing.user == request.user %}
+                    <p>Sellers cannot bid on their own listings.</p>
+                    {% endif %}
+
                 </div>
             </div>
             <!-- bid btn area end -->
