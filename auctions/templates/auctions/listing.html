@@ -13,27 +13,38 @@
         <div class="row">
             <!-- img area start -->
             <div class="border p-2 col-sm-6 col-lg-6 listing_img_container">
-                {% if listing.image_url %}
-            <img class="img-fluid rounded mx-auto d-block listing_img" src="{{ listing.image_url }}">
+            {% if listing.image_url %}
+                <img class="img-fluid rounded mx-auto d-block listing_img" src="{{ listing.image_url }}">
             {% else %}
-            <img class="img-fluid rounded mx-auto d-block listing_img" src="{% static 'auctions/images/noimg.svg' %}">
+                <img class="img-fluid rounded mx-auto d-block listing_img" src="{% static 'auctions/images/noimg.svg' %}">
             {% endif %}    
             </div>
             <!-- img area end -->
             <!-- bid btn area start -->
             <div class="border col-sm-6 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
                 <!-- d-flex class is needed to align elements (due to heights decided by size of img)-->
-                {% if listing.user != request.user %}
-                <form class="#" action="">
-                    <div class="align-items-center p-5">
-                    <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">$</span>
-                            <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="addon-wrapping">
-                            <button type="submit" class="btn btn-primary" id="submit-addon">Bid!</button>
-                      </div>
-                </form>
+                {% if user.is_authenticated %}
+                    {% if listing.user == request.user %}                        <form class="#" action="">
+                        <div class="align-items-center p-5">
+                        <div class="input-group flex-nowrap">
+                            <span class="input-group-text" id="addon-wrapping">$</span>
+                                <input type="number" class="form-control disabled" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="addon-wrapping">
+                                <button type="submit" class="btn btn-primary disabled" id="submit-addon">Bid!</button>
+                        </div>
+                    </form>
+                        <p>Sellers cannot bid on their own listings.</p>
+                    {% else %}
+                        <form class="#" action="POST">
+                            <div class="align-items-center p-5">
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping">$</span>
+                                    <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="addon-wrapping">
+                                    <button type="submit" class="btn btn-primary" id="submit-addon">Bid!</button>
+                            </div>
+                        </form>
+                    {% endif %}
                 {% else %}
-
+                    <p>You must be <a href="{% url 'login' %}">logged in</a> to bid.</p>
                 {% endif %}
                 </div>
             </div>
