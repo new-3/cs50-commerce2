@@ -12,20 +12,27 @@ from .forms import ListingForm
 
 def index(request):
     status = request.GET.get('status')
+    if status is None:
+        status = Listing.ACTIVE
+
+    listings = Listing.objects.filter(status=status)
+    status_view = next(filter(lambda x: x[0] == status, Listing.STATUS))[1]
+    
     cat = request.GET.get('cat')
+    if cat:
+        category_view = Category.objects.get(code=cat).name
+    else:
+        category_view = None
 
     # when category is specified by GET Method
     if cat:
-        listings = Listing.objects.filter(category=cat)
-    else:
-        listings = Listing.objects.all()
-
-    if status:
-        listings = listings.filter(status=status)
+        listings = listings.filter(category=cat)
 
     # todo : must include current highest bid in each listings
     return render(request, "auctions/index.html", {
-        "listings": listings
+        "listings": listings,
+        "status_view": status_view,
+        "category_view": category_view
     })
 
 

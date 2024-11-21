@@ -2,9 +2,12 @@
 {% load static %}
 
 {% block body %}
-    <h2 class="text-center py-5">Active Listings</h2>
+    <h2 class="text-center py-5">{{ status_view }} Listings</h2>
+        {% if category_view %}
+        <h4 class="text-center py-2">Category: {{ category_view }}</h4>
+        {% endif %}
         {% for listing in listings %}
-        <div class="container-lg my-2 bd-blue-800">
+        <div class="container-lg my-2 bd-blue-800" >
             <div class="row">
                 <div class="p-2 col-sm-4 col-lg-2">
                     {% if listing.image_url %}
