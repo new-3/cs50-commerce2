@@ -25,21 +25,27 @@
                 <!-- d-flex class is needed to align elements (due to height is not fixed, decided by size of img)-->
                 <form class="" action="{% url 'bid' %}" method="POST">
                     {% csrf_token %}
-                    <div class="align-items-center p-5">
-                    <div class="input-group flex-nowrap">
+                    <div class="border row align-items-center p-5">
+                    <div class="border input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">$</span>
                         <input type="number" step="0.5" name="bid_amount" class="form-control" placeholder="{{ bid_price }}" value="{{ bid_price }}" aria-label="Bid Price" aria-describedby="addon-wrapping"
                         {% if not bid_enabled %}disabled{% endif %}>
                         <input type="number" name="id" hidden value={{listing.id}}>
                         <button type="submit" class="btn btn-primary {% if not bid_enabled %}disabled{% endif %}" id="submit-addon">Bid!</button>
+                    </form>
                     </div>
-                </form>
+                <!-- </div> -->
+                
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="alert {{ message.tags|safe }}">{{ message }}</div>
+                            <div class="border alert {{ message.tags|safe }}"><p class="fw-light">{{ message }}</p></div>
                         {% endfor %}
                     {% endif %}
-
+                            <div class="border text-end">
+                                <button type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip">
+                                    Add to Watchlist
+                                </button>
+                            </div>
                 </div>
             </div>
             <!-- bid btn area end -->
