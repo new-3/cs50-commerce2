@@ -4,12 +4,12 @@
 
     <h2 class="text-center py-5">Register</h2>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-    <div class="container-lg my-2 bd-blue-800 min-vh-50">
+    <div class="container-lg my-2 py-2 bd-blue-800 min-vh-50">
         <div class="p-2 col-sm-6 col-lg-6">
                 <form class="p-4" action="{% url 'register' %}" method="post">
+                    {% if message %}
+                        <div>{{ message }}</div>
+                    {% endif %}
                     {% csrf_token %}
                     <div class="form-group my-2">
                         <input class="form-control" autofocus type="text" name="username" placeholder="Username">
@@ -24,9 +24,10 @@
                         <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
                     </div>
                     <input class="btn btn-primary" type="submit" value="Register">
+                    <p class="pt-2">Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
                 </form>
             </div>
-            <p>Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
+            
         </div>
         
         
