@@ -14,7 +14,7 @@ class Category(models.Model):
             raise ValidationError(f"Code must be exactly 3 characters long.")
     
     code = models.CharField(max_length=3, validators=[validate_code_len])
-    name = models.CharField(max_length=15, help_text="Enter name of a category.")
+    name = models.CharField(max_length=15)
 
     def __str__(self) -> str:
         return self.name
@@ -37,7 +37,7 @@ class Listing(models.Model):
     status = models.CharField(max_length=1, choices=STATUS, default=ACTIVE)
     start_price = models.DecimalField(max_digits=7, decimal_places=2, help_text="Enter the starting bid should be.")
     image_url = models.URLField(blank=True, help_text="Please provide the URL of your item(optional).")
-    category = models.CharField(max_length=3, blank=True, choices=get_category_choices())
+    category = models.CharField(max_length=3, blank=True, choices=get_category_choices(), help_text="Select the category of your item(optional).")
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

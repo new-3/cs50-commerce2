@@ -11,12 +11,17 @@ from .models import User, Listing, Category, Bid
 from .forms import ListingForm
 
 def index(request):
+    status = request.GET.get('status')
     cat = request.GET.get('cat')
+
     # when category is specified by GET Method
     if cat:
         listings = Listing.objects.filter(category=cat)
     else:
         listings = Listing.objects.all()
+
+    if status:
+        listings = listings.filter(status=status)
 
     # todo : must include current highest bid in each listings
     return render(request, "auctions/index.html", {
