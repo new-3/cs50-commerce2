@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2 class="text-center py-5">This is Watchlist page for {{ user }}</h2>
+<p>There are {{count}} list(s)</p>
+<ul>
+    {% for listing in watchlists %}
+    <li>{{ listing}}</li>
+    {% endfor %}
+</ul>
+    
+{% endblock %}

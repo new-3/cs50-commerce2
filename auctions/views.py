@@ -196,3 +196,24 @@ def bid(request):
         messages.success(request, "Your bid was accepted!")
         
     return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
+
+@login_required
+def watchlist_view(request):
+
+    return render(request, "auctions/watchlist.html", {
+        "watchlists": request.user.watchlists.all(),
+        "count": request.user.watchlists.count()
+    })
+
+@login_required
+def watchlist_toggle(request):
+    if request.method == "POST":
+        print("Watchlist Toggle Request")
+        user = request.user
+        id = request.POST["id"]
+        listing = Listing.objects.get(pk=id)
+        print(f"add {listing}to watchlist to {user}")
+        user.watchlists.add(listing)
+        
+
+    return HttpResponseRedirect(reverse("listing") + f"?id={listing.id}")

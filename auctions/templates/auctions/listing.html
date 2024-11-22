@@ -41,11 +41,18 @@
                             <div class="border alert {{ message.tags|safe }}"><p class="fw-light">{{ message }}</p></div>
                         {% endfor %}
                     {% endif %}
+                    <!-- add to/remove from watchlist -->
+                    {% if user.is_authenticated %}
                             <div class="border text-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip">
-                                    Add to Watchlist
-                                </button>
+                                <form action="{% url 'watch' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="number" name="id" hidden value={{listing.id}}>
+                                    <button type="submit" class="btn btn-success">
+                                        Add to Watchlist
+                                    </button>    
+                                </form>
                             </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- bid btn area end -->

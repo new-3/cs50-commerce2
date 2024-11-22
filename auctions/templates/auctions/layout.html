@@ -23,6 +23,14 @@
             <div class="navbar-nav">
               <a class="nav-link" href="{% url 'index' %}?status=A">Active Listings</a>
               <a class="nav-link" href="{% url 'index' %}?status=C">Closed Listings</a>
+              <!-- WatchList -->
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'watchlist' %}">WatchList</a>
+              {% else %}
+              <a class="nav-link disabled" href="{% url 'watchlist' %}" 
+              data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">WatchList</a>
+              {% endif %}
+              <!-- Watchlist End-->
               <a class="nav-link" href="{% url 'category' %}">Categories</a>
               {% if user.is_authenticated %}
               <a class="nav-link" href="{% url 'create' %}">Create Listing</a>

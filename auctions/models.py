@@ -40,6 +40,7 @@ class Listing(models.Model):
     category = models.CharField(max_length=3, blank=True, choices=get_category_choices(), help_text="Select the category of your item(optional).")
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
+    watchers = models.ManyToManyField(User, blank=True, related_name="watchlists")
 
     def __str__(self) -> str:
         return self.title
@@ -66,12 +67,12 @@ class Comment(models.Model):
         return self.content[:10]
 
 
-class WatchList(models.Model):
-    user = models.ManyToManyField(User, related_name="watching_item")
-    listing = models.ManyToManyField(Listing, related_name="watched_by")
+# class WatchList(models.Model):
+#     user = models.ManyToManyField(User, related_name="watching_item")
+#     listing = models.ManyToManyField(Listing, related_name="watched_by")
 
-    def __str__(self) -> str:
-        return f"{self.user} - {self.listing}"
+#     def __str__(self) -> str:
+#         return f"{self.user} - {self.listing}"
 
 
 # Complete the implementation of your auction site. You must fulfill the following requirements:
