@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 
-from .models import User, Listing, Category, Bid
-from .forms import ListingForm
+from .models import User, Listing, Category, Bid, Comment
+from .forms import ListingForm, EditCommentForm
 
 def index(request):
     status = request.GET.get('status')
@@ -151,6 +151,14 @@ def listing(request):
     # toggle watchlists button
     is_watching = user.is_authenticated and user.watchlists.filter(id=listing.id).exists()
     
+    # Display Comments
+    comments = Comment.objects.filter(listing=listing).order_by('created_at')
+    print(comments)
+
+    # Display Comment Form
+    comment_form = EditCommentForm(initial={'listing_id': listing_id})
+
+
     return render(request, "auctions/listing.html", {
         "listing" : listing,
         "bids": listing.bids.all().count,
@@ -158,8 +166,23 @@ def listing(request):
         "bid_price": bid_price,
         "bid_user": bid_user,
         "bid_enabled": bid_enabled,
-        "is_watching": is_watching
+        "is_watching": is_watching,
+        "comment_form": comment_form,
+        "comments": comments
     })
+
+@login_required
+def comment(request):
+    if request.method =='POST':
+        user, listing_id = request.user, request.POST["listing_id"]
+        content = request.POST["comment"]
+
+        comment = Comment(user=user, listing=Listing.objects.get(pk=listing_id), content=content)
+        comment.save()
+        print(user)
+        print(listing_id)
+        print(comment)
+    return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
 
 
 @login_required
@@ -254,3 +277,8 @@ def watchlist_toggle(request):
         
 
     return HttpResponseRedirect(reverse("listing") + f"?id={listing.id}")
+
+
+
+    
+

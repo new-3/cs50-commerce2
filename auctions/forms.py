@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Listing
+from .models import Listing, Comment
 
 class ListingForm(ModelForm):
     class Meta:
@@ -25,4 +25,13 @@ class ListingForm(ModelForm):
             })
         
         }
+
+class EditCommentForm(forms.Form):
+    listing_id = forms.IntegerField(
+        widget=forms.HiddenInput()
+    )
+
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'placeholder': 'Enter your comment here', 'class': 'form-control'})
+    )
 
