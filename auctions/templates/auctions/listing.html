@@ -106,7 +106,7 @@
             <p>Last edit : {{ listing.edited_at }}</p>
             <p>There are {{ bids }} bid(s).</p>
             <p>Bid Price : {{ bid_price }}</p>
-            {% if listing.winner %}
+            {% if listing.status == 'C' %}
             <p>Winner: {{ listing.winner }}</p>
             {% endif %}
 

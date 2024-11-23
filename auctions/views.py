@@ -137,6 +137,9 @@ def listing(request):
     if listing.winner == request.user:
         messages.info(request, "You won the bid!")
         bid_enabled = False
+    elif listing.status == Listing.CLOSED:
+        messages.info(request, "Bid is Closed.")
+        bid_enabled = False
     else:
         if listing.user == request.user:
             messages.error(request, "You cannot bid on your own listings.")
@@ -171,6 +174,8 @@ def close_bid(request):
         
         if listing.bids.exists():
             winner = listing.bids.order_by('-price').first().user
+        else:
+            winner = None
 
         listing.status = Listing.CLOSED
         listing.winner = winner
