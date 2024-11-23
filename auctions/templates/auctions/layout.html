@@ -7,8 +7,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Auctions{% endblock %}</title>
-    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
   </head>
   <body>
 
@@ -25,11 +25,12 @@
               <a class="nav-link" href="{% url 'index' %}?status=C">Closed Listings</a>
               <!-- WatchList -->
               {% if user.is_authenticated %}
-              <a class="nav-link" href="{% url 'watchlist' %}">WatchList</a>
+              <a class="nav-link position-relative" href="{% url 'watchlist' %}">WatchList
                 {% if user.watchlists.count > 0 %}
-                  <a class="nav-link" href="{% url 'watchlist' %}">
-                    <span class="circle">{{ user.watchlists.count}}</span></a>
+                <span class="position-absolute top-20 start-80 translate-middle badge bg-primary rounded-circle">{{ user.watchlists.count}}<span class="visually-hidden">watchlist counter</span>
+                    </span>                &nbsp;
                 {% endif %}
+              </a>
               {% else %}
               <a class="nav-link disabled" href="">WatchList</a>
               {% endif %}

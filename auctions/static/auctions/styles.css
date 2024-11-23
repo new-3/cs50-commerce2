@@ -1,3 +1,19 @@
+a {
+  text-decoration: none;
+}
+
+a h5.listing-title {
+  text-decoration: underline dashed;
+  text-decoration-color: white;
+  text-underline-offset: 0.2rem;
+  color: white;
+  padding-bottom: 1rem;
+}
+
+a h5.listing-title:hover {
+  background-color: #6ea8fe;
+  color: black;
+}
 
 .bd-blue-100 {
   color: #000;

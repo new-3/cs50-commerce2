@@ -116,13 +116,9 @@ def listing(request):
 
     # only render active listings
     listing = Listing.objects.get(pk=listing_id)
-    stat = listing.get_status_display()
-    
-    # todo : render status (active/closed)
-    print(stat)
 
     """Give additional info about bids"""
-    # show 3 highest bids
+    # show 5 highest bids
     if listing.bids.exists():
         current_bids = listing.bids.order_by('-price')[:5]
         bid_price = listing.bids.order_by('-price').first().price
@@ -138,12 +134,16 @@ def listing(request):
         login_url = reverse('login')
         messages.error(request, mark_safe(f"""You must be <a href="{login_url}">logged in</a> to bid."""))
         bid_enabled = False
-    if listing.user == request.user:
-        messages.error(request, "Sellers cannot bid on their own listings.")
+    if listing.winner == request.user:
+        messages.info(request, "You won the bid!")
         bid_enabled = False
-    if bid_user == request.user:
-        messages.error(request, "You are already the highest bidder.")
-        bid_enabled = False
+    else:
+        if listing.user == request.user:
+            messages.error(request, "You cannot bid on your own listings.")
+            bid_enabled = False
+        if bid_user == request.user:
+            messages.error(request, "You are already the highest bidder.")
+            bid_enabled = False
 
     # toggle watchlists button
     is_watching = user.is_authenticated and user.watchlists.filter(id=listing.id).exists()
@@ -158,6 +158,29 @@ def listing(request):
         "is_watching": is_watching
     })
 
+
+@login_required
+def close_bid(request):
+    if request.method == 'POST':
+        user, listing_id = request.user, request.POST.get('id')
+        listing = Listing.objects.get(pk=listing_id)
+        print(user, listing_id)
+        if user != Listing.objects.get(pk=listing_id).user:
+            messages.error(request, "Only the user who listed the item can close the bid!")
+            return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
+        
+        if listing.bids.exists():
+            winner = listing.bids.order_by('-price').first().user
+
+        listing.status = Listing.CLOSED
+        listing.winner = winner
+        listing.save()
+
+        print(f"New Status: {listing.get_status_display()}, Winner: {listing.winner}")
+
+        return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
+
+   
 def category(request):
     categories = Category.objects.all()
 

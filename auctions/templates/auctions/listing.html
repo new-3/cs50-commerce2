@@ -6,9 +6,30 @@
     <h2 class="text-center py-5">Listing</h2>
 
     <div class="container-lg my-2 bd-blue-800 min-vh-50">
-        <div class="p-2 col-sm-6 col-lg-6 ">
+        <div class="p-2 col-sm-6 col-lg-6 position-relative">
             <p class="display-6 fw-bold">{{ listing.title }}</p>
             <p class="text-end"> submited by {{ listing.user }}</p>
+            <div class="position-absolute bottom-0 start-0 p-3 row">
+                {% if user in listing.watchers.all %}
+                <div class="col">
+                    <span class="row badge text-bg-secondary">Watchlist</span>
+                </div>
+                {% endif %}
+                {% if listing.get_status_display == 'Active' %}
+                <div class="col">
+                    <span class="badge text-bg-success">Active</span>
+                </div>
+                {% elif listing.get_status_display == 'Closed' %}
+                <div class="col">
+                    <span class="badge text-bg-danger">Closed</span>
+                </div>
+                {% endif %}
+                {% if listing.winner == user %}
+                <div class="col">
+                    <span class="badge text-bg-success">Winner!</span>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <div class="row">
             <!-- img area start -->
@@ -35,34 +56,43 @@
                     </form>
                     </div>
                 <!-- </div> -->
-                
+                    <div class="messages">
                     {% if messages %}
                         {% for message in messages %}
                             <div class="border alert {{ message.tags|safe }}"><p class="fw-light">{{ message }}</p></div>
                         {% endfor %}
                     {% endif %}
+                    </div>
+                    <div class="border text-end row text-center">
+                    <!-- user who created listing can close the bid. -->
+                    <div class="col-6">
+                        {% if user == listing.user and listing.status == "A" %}
+                        <form action="{% url 'close' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="id" hidden value={{listing.id}}>
+                            <button type="submit" class="btn btn-danger">
+                                Close Bid
+                            </button>    
+                        </form>
+                        {% endif %}
+                    </div>
                     <!-- add to/remove from watchlist -->
-                    {% if user.is_authenticated and not is_watching %}
-                            <div class="border text-end">
-                                <form action="{% url 'watch' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="number" name="id" hidden value={{listing.id}}>
-                                    <button type="submit" class="btn btn-success">
-                                        Add to Watchlist
-                                    </button>    
-                                </form>
-                            </div>
+                    <div class="col-6">
+                        {% if user.is_authenticated and not is_watching %}
+                        <form class="col" action="{% url 'watch' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="id" hidden value={{listing.id}}>
+                            <button type="submit" class="btn btn-success">Add to Watchlist</button>    
+                        </form>
                     {% elif user.is_authenticated and is_watching %}
-                            <div class="border text-end">
-                                <form action="{% url 'watch' %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="number" name="id" hidden value={{listing.id}}>
-                                    <button type="submit" class="btn btn-danger">
-                                        Remove from Watchlist
-                                    </button>    
-                                </form>
-                            </div>
+                            <form class="col" action="{% url 'watch' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="number" name="id" hidden value={{listing.id}}>
+                                <button type="submit" class="btn btn-danger">Remove from Watchlist</button>    
+                            </form>
                     {% endif %}
+                    </div>
+                    </div>
                 </div>
             </div>
             <!-- bid btn area end -->
@@ -76,6 +106,9 @@
             <p>Last edit : {{ listing.edited_at }}</p>
             <p>There are {{ bids }} bid(s).</p>
             <p>Bid Price : {{ bid_price }}</p>
+            {% if listing.winner %}
+            <p>Winner: {{ listing.winner }}</p>
+            {% endif %}
 
             {% if bids > 0 %}
             <h6>Highest Bids</h6>
