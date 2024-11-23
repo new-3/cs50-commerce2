@@ -26,9 +26,12 @@
               <!-- WatchList -->
               {% if user.is_authenticated %}
               <a class="nav-link" href="{% url 'watchlist' %}">WatchList</a>
+                {% if user.watchlists.count > 0 %}
+                  <a class="nav-link" href="{% url 'watchlist' %}">
+                    <span class="circle">{{ user.watchlists.count}}</span></a>
+                {% endif %}
               {% else %}
-              <a class="nav-link disabled" href="{% url 'watchlist' %}" 
-              data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">WatchList</a>
+              <a class="nav-link disabled" href="">WatchList</a>
               {% endif %}
               <!-- Watchlist End-->
               <a class="nav-link" href="{% url 'category' %}">Categories</a>

@@ -27,6 +27,12 @@ def index(request):
     # when category is specified by GET Method
     if cat:
         listings = listings.filter(category=cat)
+    
+    for listing in listings:
+        if listing.bids.exists():
+            listing.current_price = listing.bids.order_by('-price').first().price
+        else:
+            listing.current_price = None
 
     # todo : must include current highest bid in each listings
     return render(request, "auctions/index.html", {
@@ -106,7 +112,7 @@ def create(request):
 
 def listing(request):
     """Render detailed page for listing."""
-    listing_id = request.GET.get('id')
+    user, listing_id = request.user, request.GET.get('id')
 
     # only render active listings
     listing = Listing.objects.get(pk=listing_id)
@@ -128,7 +134,7 @@ def listing(request):
 
     bid_enabled = True
     # give reasons for disabled bid buttons
-    if not request.user.is_authenticated:
+    if not user.is_authenticated:
         login_url = reverse('login')
         messages.error(request, mark_safe(f"""You must be <a href="{login_url}">logged in</a> to bid."""))
         bid_enabled = False
@@ -138,15 +144,18 @@ def listing(request):
     if bid_user == request.user:
         messages.error(request, "You are already the highest bidder.")
         bid_enabled = False
-    
 
+    # toggle watchlists button
+    is_watching = user.is_authenticated and user.watchlists.filter(id=listing.id).exists()
+    
     return render(request, "auctions/listing.html", {
         "listing" : listing,
         "bids": listing.bids.all().count,
         "current_bids": current_bids,
         "bid_price": bid_price,
         "bid_user": bid_user,
-        "bid_enabled": bid_enabled
+        "bid_enabled": bid_enabled,
+        "is_watching": is_watching
     })
 
 def category(request):
@@ -208,12 +217,12 @@ def watchlist_view(request):
 @login_required
 def watchlist_toggle(request):
     if request.method == "POST":
-        print("Watchlist Toggle Request")
-        user = request.user
-        id = request.POST["id"]
+        user, id = request.user, request.POST["id"]
         listing = Listing.objects.get(pk=id)
-        print(f"add {listing}to watchlist to {user}")
-        user.watchlists.add(listing)
+        if user.watchlists.filter(id=listing.id).exists():
+            user.watchlists.remove(listing)
+        else:
+            user.watchlists.add(listing)
         
 
     return HttpResponseRedirect(reverse("listing") + f"?id={listing.id}")

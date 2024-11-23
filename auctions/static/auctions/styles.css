@@ -66,3 +66,14 @@ div.listing_img_container {
 img.listing_img {
    max-height: 100%;
 }
+
+.circle {
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #3d8bfd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

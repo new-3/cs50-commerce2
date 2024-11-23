@@ -42,13 +42,23 @@
                         {% endfor %}
                     {% endif %}
                     <!-- add to/remove from watchlist -->
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and not is_watching %}
                             <div class="border text-end">
                                 <form action="{% url 'watch' %}" method="POST">
                                     {% csrf_token %}
                                     <input type="number" name="id" hidden value={{listing.id}}>
                                     <button type="submit" class="btn btn-success">
                                         Add to Watchlist
+                                    </button>    
+                                </form>
+                            </div>
+                    {% elif user.is_authenticated and is_watching %}
+                            <div class="border text-end">
+                                <form action="{% url 'watch' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="number" name="id" hidden value={{listing.id}}>
+                                    <button type="submit" class="btn btn-danger">
+                                        Remove from Watchlist
                                     </button>    
                                 </form>
                             </div>

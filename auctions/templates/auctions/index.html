@@ -17,12 +17,14 @@
                     {% endif %}
                 </div>
                 <div class="p-2 col-sm-4 col-lg">
-                    <a href="{% url 'listing' %}?id={{ listing.id }}"><h5 class="card-title"><strong>{{ listing.title }}</strong></h5></a>
-                    <p><strong>Description: </strong>{{ listing.desc }}</p>
-                    <p>by {{ listing.user }}</p>
-                    <p>${{ listing.start_price }}</p>
-                    <p>Bids: {{ listing.bids }}</p>
-                    <a href="#" class="btn btn-primary">Click Me</a>
+                    <a href="{% url 'listing' %}?id={{ listing.id }}"><h5 class="card-title mb-3"><strong>{{ listing.title }}</strong></h5></a>
+                    <p>Description: <strong>{{ listing.desc }}</strong></p>
+                    <p>Listed by <strong>{{ listing.user }}</strong></p>
+                    <p>Starting Price: <strong>${{ listing.start_price }}</strong></p>
+                    <p>Current Price: <strong>$
+                        {% if listing.current_price %}{{ listing.current_price }}
+                        {% else %}{{ listing.start_price }}{% endif %}
+                    </strong></p>
                 </div>
             </div>            
         </div>
