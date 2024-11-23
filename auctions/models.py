@@ -41,6 +41,7 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
     watchers = models.ManyToManyField(User, blank=True, related_name="watchlists")
+    winner = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name="won_listings")
 
     def __str__(self) -> str:
         return self.title
