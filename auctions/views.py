@@ -37,7 +37,7 @@ def index(request):
     # todo : must include current highest bid in each listings
     return render(request, "auctions/index.html", {
         "listings": listings,
-        "status_view": status_view,
+        "page_title": f"{status_view} Listings",
         "category_view": category_view
     })
 
@@ -270,10 +270,11 @@ def bid(request):
 
 @login_required
 def watchlist_view(request):
+    listings = Listing.objects.filter(user=request.user)
 
-    return render(request, "auctions/watchlist.html", {
-        "watchlists": request.user.watchlists.all(),
-        "count": request.user.watchlists.count()
+    return render(request, "auctions/index.html", {
+        "listings": listings,
+        "page_title": "Watchlists",
     })
 
 @login_required
@@ -288,8 +289,3 @@ def watchlist_toggle(request):
         
 
     return HttpResponseRedirect(reverse("listing") + f"?id={listing.id}")
-
-
-
-    
-

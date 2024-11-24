@@ -32,6 +32,6 @@ class EditCommentForm(forms.Form):
     )
 
     comment = forms.CharField(
-        widget=forms.Textarea(attrs={'placeholder': 'Enter your comment here', 'class': 'form-control'})
+        widget=forms.Textarea(attrs={'placeholder': 'Enter your comment here', 'class': 'form-control m-2'})
     )
 

@@ -33,7 +33,7 @@
         </div>
         <div class="row">
             <!-- img area start -->
-            <div class="border p-2 col-sm-6 col-lg-6 listing_img_container">
+            <div class="p-2 col-sm-6 col-lg-6 listing_img_container">
             {% if listing.image_url %}
                 <img class="img-fluid rounded mx-auto d-block listing_img" src="{{ listing.image_url }}">
             {% else %}
@@ -42,12 +42,12 @@
             </div>
             <!-- img area end -->
             <!-- bid btn area start -->
-            <div class="border col-sm-6 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
+            <div class="col-sm-6 col-lg-6 d-flex justify-content-center align-items-center mx-auto">
                 <!-- d-flex class is needed to align elements (due to height is not fixed, decided by size of img)-->
                 <form class="" action="{% url 'bid' %}" method="POST">
                     {% csrf_token %}
-                    <div class="border row align-items-center p-5">
-                    <div class="border input-group flex-nowrap">
+                    <div class="row align-items-center p-5">
+                    <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">$</span>
                         <input type="number" step="0.5" name="bid_amount" class="form-control" placeholder="{{ bid_price }}" value="{{ bid_price }}" aria-label="Bid Price" aria-describedby="addon-wrapping"
                         {% if not bid_enabled %}disabled{% endif %}>
@@ -59,11 +59,11 @@
                     <div class="messages">
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="border alert {{ message.tags|safe }}"><p class="fw-light">{{ message }}</p></div>
+                            <div class="alert {{ message.tags|safe }}"><p class="fw-light">{{ message }}</p></div>
                         {% endfor %}
                     {% endif %}
                     </div>
-                    <div class="border text-end row text-center">
+                    <div class="text-end row text-center m-2">
                     <!-- user who created listing can close the bid. -->
                     <div class="col-6">
                         {% if user == listing.user and listing.status == "A" %}
@@ -132,7 +132,7 @@
      </div>
      <section class="display-comments">
         <div class="">
-        <h1>Comments</h1>
+        <p class="display-6 fw-bold">Comments</p>
         {% if not comments %}
         <div class="bd-blue-400 m-1 p-2">
             <h5>No comments yet</h5>
@@ -168,7 +168,7 @@
      </section>
 
      <section class="add-comment-section">
-        <h1>Add Comments</h1>
+        <p class="display-6 fw-bold">Add Comments</p>
         <form action="{% url 'comment' %}", method="POST">
         {% csrf_token %}
         {{ comment_form }}
