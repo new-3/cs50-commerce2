@@ -184,6 +184,17 @@ def comment(request):
         print(comment)
     return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
 
+@login_required
+def del_comment(request):
+    if request.method == 'POST':
+        user, comment_id, listing_id = request.user, request.POST["comment_id"], request.POST["listing_id"]
+        comment = Comment.objects.get(pk=comment_id)
+        if user == comment.user:
+            comment.delete()
+        else:
+            print(f"Error: {user} requested to delete {comment.user}'s {comment}.")
+    return HttpResponseRedirect(reverse("listing") + f"?id={listing_id}")
+
 
 @login_required
 def close_bid(request):

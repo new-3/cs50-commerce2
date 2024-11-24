@@ -102,8 +102,6 @@
             <p class="">{{ listing.desc }}</p>
             <p class="">Status : {{ listing.get_status_display }}</p>
             <p>Category : {{ listing.get_category_display }}</p>
-            <p>Created : {{ listing.created_at }}</p>
-            <p>Last edit : {{ listing.edited_at }}</p>
             <p>There are {{ bids }} bid(s).</p>
             <p>Bid Price : {{ bid_price }}</p>
             {% if listing.status == 'C' %}
@@ -133,12 +131,37 @@
         </div>
      </div>
      <section class="display-comments">
-        <div>
-        <h1>기존 댓글</h1>
+        <div class="">
+        <h1>Comments</h1>
+        {% if not comments %}
+        <div class="bd-blue-400 m-1 p-2">
+            <h5>No comments yet</h5>
+            <p>Add the first comment.</p>
+        </div>
+        {% endif %}
         {% for comment in comments %}
-        <p>{{comment.user}}</p>
+        <div class="bd-blue-400 m-1 p-2">
+            <div class="row">
+                <div class="col-lg-5">
+                    <p>{{comment.user}}</p>
+                </div>
+                <div class="col-lg-5 d-none d-md-block text-end">
+                    <p>{{comment.created_at}}</p>
+                </div>
+                {% if user == comment.user %}
+                <div class="col-lg-2 text-end">
+                    <form action="{% url 'del_comment' %}", method="POST">
+                        {% csrf_token %}
+                        <input type="number" hidden name="comment_id" value={{comment.id}}>
+                        <input type="number" hidden name="listing_id" value={{listing.id}}>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Do you really want to delete your comment?');">Delete</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>            
         <p>{{comment.content}}</p>
-        <p>{{comment.created_at}}</p>
+        </div>
+        
         {% endfor %}
         <div>
 
